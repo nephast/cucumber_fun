@@ -113,7 +113,7 @@ The first file to look at is the [`features/Feature1.feature`](https://github.co
 You'll see that at this stage, the addition feature just defines 2 simple (and obvious) scenarios.
 
 #### Step Definitions
-Now we want to define the steps. Our steps are in [`features/step_definitions/myStepDefinitions.coffee`](https://github.com/denford/TuteCumber/blob/Stage1/features/step_definitions/myStepDefinitions.coffee). However, if we had only written the .feature file, and nothing else, when we tried to run the tests we'd see something like this (you can test this out by clearing out the step definitions file and running the `npm test`):
+Now we want to define the steps. Our steps are in [`features/step_definitions/myStepDefinitions.js`](https://github.com/denford/TuteCumber/blob/Stage1/features/step_definitions/myStepDefinitions.coffee). However, if we had only written the .feature file, and nothing else, when we tried to run the tests we'd see something like this (you can test this out by clearing out the step definitions file and running the `npm test`):
 ``` bash
 UUUUUU
 
@@ -137,7 +137,7 @@ this.Then(/^the result should be (\d+)$/, function (arg1, callback) {
   callback.pending();
 });
 ```
-What this is telling us is that although we've defined the feature, there's no step definitions (yet!). Helpfully cucumber.js gives us the templates for these step definitions (in JavaScript). **Note** that since I'm using CoffeeScript, our [`features/step_definitions/myStepDefinitions.coffee`](https://github.com/denford/TuteCumber/blob/Stage1/features/step_definitions/myStepDefinitions.coffee) file uses a different syntax.
+What this is telling us is that although we've defined the feature, there's no step definitions (yet!). Helpfully cucumber.js gives us the templates for these step definitions (in JavaScript). **Note** that since I'm using CoffeeScript, our [`features/step_definitions/myStepDefinitions.js`](https://github.com/denford/TuteCumber/blob/Stage1/features/step_definitions/myStepDefinitions.coffee) file uses a different syntax.
 
 In essence, this file is where we declare the World object (`@World` - more on this below), then we have the `@Given/@When/@Then` definitions. Inside these definitions, we call methods on the World object (e.g. `@clearCalculator()` or `@setArguments arg1, arg2`) and then call the `callback()` to continue the party. In particular, in the `@Then` definition, we perform a test and either call the `callback()` (when it passes) or `callback.fail` (when it fails).
 **Note** that arguments passed in are *always* strings, even when the regex declares them as numbers etc, hence we need to use the `Number` function.
@@ -145,11 +145,11 @@ In essence, this file is where we declare the World object (`@World` - more on t
 According to the [cucumber.js website](https://github.com/cucumber/cucumber-js), the World object is:
 > *World* is a constructor function with utility properties, destined to be used in step definitions
 
-Basically, inside our World definition, ([`features/support/world.coffee`](https://github.com/denford/TuteCumber/blob/Stage1/features/support/world.coffee)), we (finally?) reference our actual code to be tested. In this case our calculator (`Calc`) object (more on this below). We call methods on our calculator, like `@calc.clearCalculator()` and `@calc.add()` from those "utility properties" mentioned above.
+Basically, inside our World definition, ([`features/support/world.js`](https://github.com/denford/TuteCumber/blob/Stage1/features/support/world.coffee)), we (finally?) reference our actual code to be tested. In this case our calculator (`Calc`) object (more on this below). We call methods on our calculator, like `@calc.clearCalculator()` and `@calc.add()` from those "utility properties" mentioned above.
 #### Calculator Model
-Finally, you can see the definition of our actual "system code", the definition of our Calculator class. This is defined in the [`models/calc.coffee`](https://github.com/denford/TuteCumber/blob/Stage1/models/calc.coffee) file. All we do is store the arguments when they are set, and use them when we want to add.
+Finally, you can see the definition of our actual "system code", the definition of our Calculator class. This is defined in the [`models/calc.js`](https://github.com/denford/TuteCumber/blob/Stage1/models/calc.coffee) file. All we do is store the arguments when they are set, and use them when we want to add.
 #### Stage 1 Comments
-We can see that at this stage, the [`models/calc.coffee`](https://github.com/denford/TuteCumber/blob/Stage1/models/calc.coffee) class is *super* simple. Tragically simple really. In fact, what is interesting here is that although we "knew" from specification in natural language that the calculator should have a concept of being cleared, in order to pass our tests we don't really have to do anything in the `clearCalculator` method. We'll discuss this and come back to it more in Stage 2 and 3.
+We can see that at this stage, the [`models/calc.js`](https://github.com/denford/TuteCumber/blob/Stage1/models/calc.coffee) class is *super* simple. Tragically simple really. In fact, what is interesting here is that although we "knew" from specification in natural language that the calculator should have a concept of being cleared, in order to pass our tests we don't really have to do anything in the `clearCalculator` method. We'll discuss this and come back to it more in Stage 2 and 3.
 ### Second feature: Subtraction (aka Stage 2)
 What goes up must come down, right? So the next stage sees us adding a feature specification for subtraction. As before, let's first update our code to this stage.
 ``` bash
@@ -167,7 +167,7 @@ More tests defined and passing now.
 #### Features
 At this stage we define our new subtraction feature in the [`features/subtraction.feature`](https://github.com/denford/TuteCumber/blob/Stage2/features/subtraction.feature) file. It is very similar to the addition feature previously discussed so not much more to discuss.
 #### Step Definitions
-The step definitions file, [`features/step_definitions/myStepDefinitions.coffee`](https://github.com/denford/TuteCumber/blob/Stage2/features/step_definitions/myStepDefinitions.coffee), now includes [only] one more step. This is because the `@Given` and the `@Then` steps can be re-used from our previous work, so all we need is one new `@When` handling the subtraction. 
+The step definitions file, [`features/step_definitions/myStepDefinitions.js`](https://github.com/denford/TuteCumber/blob/Stage2/features/step_definitions/myStepDefinitions.coffee), now includes [only] one more step. This is because the `@Given` and the `@Then` steps can be re-used from our previous work, so all we need is one new `@When` handling the subtraction. 
 
 **But**, this is where things start to get really interesting...
 
@@ -178,13 +178,13 @@ So what we need to do is request some `@result` from the calculator in the `@The
 This drives some interesting and appropriate change "downstream" throughout the rest of the system.
 
 #### World
-Our World - [`features/support/world.coffee`](https://github.com/denford/TuteCumber/blob/Stage2/features/support/world.coffee) - just has one simple `@subtract` method added.
+Our World - [`features/support/world.js`](https://github.com/denford/TuteCumber/blob/Stage2/features/support/world.coffee) - just has one simple `@subtract` method added.
 
 However the downstream refactoring we mentioned above flows through the World as well. Now we don't need / want to return a value from the `@add` and the new `@subtract` methods. So we don't. And we also want to define some `@result` method that requests the current result from the calculator (`@calc.result()`).
 
 At this point we're just "specifying" that this is what would make sense, to interact with the calculator in this way. We don't care at this stage how the actual calculator model must change to support this. [Outside-in](#bdd-and-cucumberjs-overview).
 #### Calculator Model
-The calculator model - [`models/calc.coffee`](https://github.com/denford/TuteCumber/blob/Stage2/models/calc.coffee) - now has to be refactored as well, as we'd expect, to support our new specification.
+The calculator model - [`models/calc.js`](https://github.com/denford/TuteCumber/blob/Stage2/models/calc.coffee) - now has to be refactored as well, as we'd expect, to support our new specification.
 
 Ultimately we've made the calculator a little more realistic. Instead of the `@add` and `@subtract` methods directly returning the value, they more appropriately just perform the addition or subtraction operation, and store the result in the new `_currentSum` property. Then the current result at any point in time can be requested with the `@result` method.
 #### Stage 2 Comments
@@ -210,7 +210,7 @@ Worthy of mention here is the `And` steps. We haven't used these before, but the
 
 Apart from that, by now the feature definitions should be fairly self-explanatory.
 #### Step Definitions
-Our step definitions ([`features/step_definitions/myStepDefinitions.coffee`](https://github.com/denford/TuteCumber/blob/Stage3/features/step_definitions/myStepDefinitions.coffee)) now undergo some more refinements. Because previously we were thinking about addition and subtraction as automic operations, it made sense to break them into a `@setArguments` and `@add` or `@subtract` methods. e.g, we wanted to add "a" and "b" to get "c", so we called `@setArguments a b` and then called `@add`.
+Our step definitions ([`features/step_definitions/myStepDefinitions.js`](https://github.com/denford/TuteCumber/blob/Stage3/features/step_definitions/myStepDefinitions.coffee)) now undergo some more refinements. Because previously we were thinking about addition and subtraction as automic operations, it made sense to break them into a `@setArguments` and `@add` or `@subtract` methods. e.g, we wanted to add "a" and "b" to get "c", so we called `@setArguments a b` and then called `@add`.
 
 But now things have changed, and we realise that if we consider adding and subtracting in the wider context of chained operations, then an add of "a" and "b" is really the same as adding "a" (onto our current sum, whatever that is) and then adding "b". Conversely, subtracting "a" from "b" is the same as adding "b" (onto our current sum, whatever that is) then subtracting "a".
 
@@ -248,9 +248,9 @@ The `@add` and `@subtract` methods have also been refactored to take a parameter
 So that is the main change to existing code, and we also add methods for `@When /^then add (-?\d+)$/` and ` @When /^then subtract (-?\d+)$/` which should be fairly obvious - just one argument now.
 
 #### World
-Our World object ([`features/support/world.coffee`](https://github.com/denford/TuteCumber/blob/Stage3/features/support/world.coffee)) now gets a little simpler actually. We get rid of the `@setArguments` method - we need it no more. Then we just add the new parameters for `@add` and `@subtract`.
+Our World object ([`features/support/world.js`](https://github.com/denford/TuteCumber/blob/Stage3/features/support/world.coffee)) now gets a little simpler actually. We get rid of the `@setArguments` method - we need it no more. Then we just add the new parameters for `@add` and `@subtract`.
 #### Calculator Model
-These changes keep flowing through and actually the Calculator class ([`models/calc.coffee`](https://github.com/denford/TuteCumber/blob/Stage3/models/calc.coffee)) becomes a little simpler (less code) but more sophisticated as well. Again we remove `setArguments`, this is no longer needed. We can then also remove the `_arg1` and `_arg2` class properties.
+These changes keep flowing through and actually the Calculator class ([`models/calc.js`](https://github.com/denford/TuteCumber/blob/Stage3/models/calc.coffee)) becomes a little simpler (less code) but more sophisticated as well. Again we remove `setArguments`, this is no longer needed. We can then also remove the `_arg1` and `_arg2` class properties.
 
 We again refactor the `add` and `subtract` methods to take the number being added or subtracted as a parameter, and updating the `_currentSum`.
 #### Stage 3 Comments
